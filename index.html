@@ -1,179 +1,1502 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>MaterialLab Metales</title>
-
-<style>
-body{
- font-family: Arial;
- background:#f4f7fb;
- text-align:center;
- padding:20px;
-}
-.container{
- background:white;
- padding:20px;
- border-radius:15px;
- max-width:700px;
- margin:auto;
- box-shadow:0 10px 20px rgba(0,0,0,0.1);
-}
-button{
- padding:10px 15px;
- margin:5px;
- background:#2457c5;
- color:white;
- border:none;
- border-radius:8px;
- cursor:pointer;
-}
-button.good{background:#0e8f7e;}
-textarea{width:95%;height:120px;margin:10px;}
-input{width:95%;padding:8px;margin:5px;}
-</style>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MaterialLab Metales · 2.º Bachillerato</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --ink:#142033;
+      --muted:#5e6b7e;
+      --line:#d9e1ec;
+      --primary:#2457c5;
+      --primary-2:#163f91;
+      --accent:#0e8f7e;
+      --warn:#b66a00;
+      --bad:#b02a37;
+      --good:#1e7e34;
+      --soft:#edf3ff;
+      --soft2:#eaf8f5;
+      --shadow: 0 18px 45px rgba(20,32,51,.10);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,#eef4ff 0%,var(--bg) 240px);
+      color:var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height:1.45;
+    }
+    header{
+      padding:28px 20px 18px;
+      border-bottom:1px solid rgba(36,87,197,.13);
+    }
+    .wrap{max-width:1180px;margin:0 auto}
+    .hero{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:20px;
+      align-items:end;
+    }
+    h1{
+      margin:0;
+      font-size:clamp(1.8rem,3vw,3rem);
+      letter-spacing:-.03em;
+    }
+    h2{margin:0 0 12px;font-size:1.45rem}
+    h3{margin:0 0 10px;font-size:1.08rem}
+    p{margin:0 0 10px}
+    .subtitle{
+      color:var(--muted);
+      max-width:780px;
+      margin-top:10px;
+      font-size:1.03rem;
+    }
+    .tagline{
+      background:rgba(255,255,255,.7);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:14px 16px;
+      box-shadow:0 12px 28px rgba(36,87,197,.08);
+    }
+    .tagline strong{display:block;margin-bottom:4px}
+    nav.stepper{
+      display:flex;
+      flex-wrap:wrap;
+      gap:9px;
+      margin:20px 0 0;
+    }
+    .step-pill{
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--muted);
+      border-radius:999px;
+      padding:9px 13px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:.9rem;
+      transition:.15s ease;
+    }
+    .step-pill.active{
+      background:var(--primary);
+      color:#fff;
+      border-color:var(--primary);
+      box-shadow:0 8px 18px rgba(36,87,197,.25);
+    }
+    .step-pill.done{
+      border-color:#a9d6ce;
+      color:#0e6f62;
+      background:#f0fbf9;
+    }
+    main{padding:26px 20px 50px}
+    section.panel{
+      display:none;
+      background:rgba(255,255,255,.86);
+      border:1px solid var(--line);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    section.panel.active{display:block}
+    .grid{display:grid;gap:16px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow:0 8px 22px rgba(20,32,51,.06);
+    }
+    .choice{
+      cursor:pointer;
+      transition:.15s ease;
+      position:relative;
+    }
+    .choice:hover{transform:translateY(-2px);border-color:#aebfde}
+    .choice.selected{
+      outline:3px solid rgba(36,87,197,.18);
+      border-color:var(--primary);
+      background:linear-gradient(180deg,#fff,#f6f9ff);
+    }
+    .choice.selected::after{
+      content:"✓";
+      position:absolute;
+      top:12px;
+      right:12px;
+      width:28px;height:28px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:var(--primary);
+      font-weight:900;
+    }
+    .small{font-size:.9rem;color:var(--muted)}
+    .note{
+      background:var(--soft);
+      border:1px solid #cddaff;
+      color:#173b82;
+      border-radius:16px;
+      padding:14px 16px;
+      margin:14px 0;
+    }
+    .success{
+      background:#eefbf0;
+      border-color:#bfe6c7;
+      color:#165b25;
+    }
+    .warning{
+      background:#fff7e8;
+      border-color:#ffd88a;
+      color:#7b4c00;
+    }
+    .danger{
+      background:#fff1f2;
+      border-color:#ffc7cf;
+      color:#85202b;
+    }
+    button{
+      appearance:none;
+      border:0;
+      border-radius:14px;
+      padding:11px 15px;
+      background:var(--primary);
+      color:#fff;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 10px 22px rgba(36,87,197,.22);
+      transition:.15s ease;
+    }
+    button:hover{background:var(--primary-2);transform:translateY(-1px)}
+    button.secondary{
+      background:#fff;
+      color:var(--primary);
+      border:1px solid #bdd0ff;
+      box-shadow:none;
+    }
+    button.ghost{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid var(--line);
+      box-shadow:none;
+    }
+    button.good{background:var(--accent)}
+    button.warn{background:#c97900}
+    button:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+      transform:none;
+    }
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:18px;
+      align-items:center;
+    }
+    label{
+      display:block;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+    select,input[type="number"],input[type="text"],textarea{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:11px 12px;
+      font:inherit;
+      background:#fff;
+      color:var(--ink);
+    }
+    textarea{min-height:116px;resize:vertical}
+    .checkrow{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:11px 12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      cursor:pointer;
+    }
+    .checkrow input{margin-top:4px;transform:scale(1.15)}
+    .table-wrap{overflow:auto;border-radius:16px;border:1px solid var(--line)}
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:#fff;
+      min-width:720px;
+    }
+    th,td{
+      padding:10px 12px;
+      border-bottom:1px solid var(--line);
+      text-align:left;
+      vertical-align:top;
+    }
+    th{
+      background:#f2f5fb;
+      color:#34415a;
+      font-size:.9rem;
+    }
+    tr:last-child td{border-bottom:0}
+    .meter{
+      height:10px;
+      border-radius:999px;
+      background:#edf1f7;
+      overflow:hidden;
+      min-width:100px;
+    }
+    .meter > span{
+      display:block;
+      height:100%;
+      background:linear-gradient(90deg,var(--accent),var(--primary));
+      width:40%;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      padding:5px 9px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:.78rem;
+      color:#193664;
+      background:#e8efff;
+      border:1px solid #c8d7ff;
+      margin:3px 4px 3px 0;
+      white-space:nowrap;
+    }
+    .badge.green{background:#eaf8f5;border-color:#bae2da;color:#0c675d}
+    .badge.orange{background:#fff4df;border-color:#ffd899;color:#744600}
+    .badge.red{background:#fff0f2;border-color:#ffc4cc;color:#84212b}
+    .formula{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background:#f5f7fb;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px 12px;
+      overflow:auto;
+    }
+    .tabs{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin:12px 0 16px;
+    }
+    .tab{
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--muted);
+      box-shadow:none;
+    }
+    .tab.active{
+      color:#fff;
+      background:var(--primary);
+      border-color:var(--primary);
+    }
+    .lab-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(320px,.9fr);
+      gap:16px;
+    }
+    canvas{
+      width:100%;
+      max-width:100%;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      display:block;
+    }
+    .svgbox{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:8px;
+      min-height:270px;
+    }
+    .result-kpi{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin:12px 0;
+    }
+    .kpi{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+    }
+    .kpi strong{display:block;font-size:1.25rem}
+    .sticky-summary{
+      position:sticky;
+      top:12px;
+    }
+    .score{
+      font-size:3.3rem;
+      font-weight:950;
+      letter-spacing:-.08em;
+      color:var(--primary);
+    }
+    .print-only{display:none}
+    .hide{display:none!important}
+    @media(max-width:900px){
+      .hero,.grid.two,.grid.three,.grid.four,.lab-layout{grid-template-columns:1fr}
+      .result-kpi{grid-template-columns:repeat(2,minmax(0,1fr))}
+      section.panel{padding:16px;border-radius:20px}
+    }
+    @media print{
+      body{background:#fff}
+      header,nav,.actions,.no-print{display:none!important}
+      main{padding:0}
+      section.panel{display:none!important}
+      #panel-final{display:block!important;box-shadow:none;border:0}
+      .print-only{display:block}
+    }
+  </style>
 </head>
-
 <body>
+  <header>
+    <div class="wrap">
+      <div class="hero">
+        <div>
+          <h1>MaterialLab Metales</h1>
+          <p class="subtitle">App guiada para 2.º de Bachillerato: analizar un reto, elegir propiedades, seleccionar un metal, realizar ensayos virtuales, leer gráficas y justificar una decisión técnica.</p>
+        </div>
+        <div class="tagline">
+          <strong>Ruta de aprendizaje</strong>
+          <span class="small">Primero razonas. Después ensayas. Finalmente decides y recibes una nota orientativa con explicación.</span>
+        </div>
+      </div>
+      <nav class="stepper" id="stepper"></nav>
+    </div>
+  </header>
 
-<div class="container">
+  <main>
+    <div class="wrap">
 
-<h1>MaterialLab Metales</h1>
+      <section class="panel active" id="panel-reto">
+        <h2>1. Reto tecnológico</h2>
+        <p>Elige un reto inicial. Cada reto tiene una función concreta y unas condiciones de uso. Todavía no se muestra el material recomendado: primero debes decidir qué propiedades son importantes.</p>
+        <div class="note warning">
+          <strong>Instrucción para la libreta:</strong> copia el reto elegido y escribe con tus palabras qué debe conseguir el prototipo.
+        </div>
+        <div class="grid two" id="challengeCards"></div>
+        <div class="actions">
+          <button id="goProps" disabled>Continuar: elegir propiedades</button>
+          <button class="ghost" onclick="resetAll()">Reiniciar app</button>
+        </div>
+      </section>
 
-<h3>Identificación</h3>
+      <section class="panel" id="panel-propiedades">
+        <h2>2. Propiedades que debe tener el material</h2>
+        <p>Selecciona entre 3 y 5 propiedades que consideres necesarias para resolver el reto. El objetivo es traducir la función del prototipo a requisitos técnicos.</p>
+        <div id="selectedChallengeSummary" class="note"></div>
+        <div class="grid three" id="propertyCards"></div>
+        <div class="card" style="margin-top:16px">
+          <label for="studentReq">Redacta los requisitos del material en una frase técnica</label>
+          <textarea id="studentReq" placeholder="Ejemplo: El material debe ser resistente a tracción, suficientemente rígido, ligero y resistente a la corrosión porque estará en el exterior."></textarea>
+        </div>
+        <div class="actions">
+          <button class="secondary" onclick="goStep('reto')">Volver</button>
+          <button id="goMaterial" disabled>Continuar: elegir metal</button>
+        </div>
+      </section>
 
-<input id="nombre" placeholder="Nombre o alias">
-<input id="grupo" placeholder="Grupo">
+      <section class="panel" id="panel-material">
+        <h2>3. Biblioteca de metales y elección inicial</h2>
+        <p>Consulta la biblioteca, compara propiedades y elige el metal que consideras más útil para el prototipo. Más adelante podrás compararlo con un segundo material.</p>
+        <div class="grid two">
+          <div>
+            <div class="table-wrap">
+              <table id="materialsTable"></table>
+            </div>
+          </div>
+          <div class="card sticky-summary">
+            <h3>Tu selección</h3>
+            <label for="material1">Material principal</label>
+            <select id="material1"></select>
+            <label for="material2" style="margin-top:12px">Segundo material para comparar, opcional</label>
+            <select id="material2"></select>
+            <div id="materialFeedback" class="note" style="margin-top:14px"></div>
+            <label for="studentMatReason">Justificación inicial</label>
+            <textarea id="studentMatReason" placeholder="Explica por qué este metal parece adecuado antes de realizar los ensayos."></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="secondary" onclick="goStep('propiedades')">Volver</button>
+          <button id="goTests">Continuar: seleccionar ensayos</button>
+        </div>
+      </section>
 
-<p><strong>RGPD:</strong> Se utilizan alias. No se recogen datos personales sensibles.
-Los datos se usan con fines educativos y se gestionan en Microsoft 365.</p>
+      <section class="panel" id="panel-ensayos">
+        <h2>4. Ensayos que ayudan a decidir</h2>
+        <p>Selecciona el ensayo o ensayos que aportan información útil para tu decisión. La app te recomienda ensayos según las propiedades que has marcado, pero debes justificarlo.</p>
+        <div id="testRecommendation" class="note"></div>
+        <div class="grid three" id="testCards"></div>
+        <div class="card" style="margin-top:16px">
+          <label for="studentTestReason">¿Por qué has elegido estos ensayos?</label>
+          <textarea id="studentTestReason" placeholder="Ejemplo: Elijo tracción porque quiero comprobar resistencia y rigidez; elijo Charpy porque la pieza puede recibir impactos."></textarea>
+        </div>
+        <div class="actions">
+          <button class="secondary" onclick="goStep('material')">Volver</button>
+          <button id="goLab">Continuar: laboratorio virtual</button>
+        </div>
+      </section>
 
-<h3>Material elegido</h3>
-<select id="material">
-<option>Acero al carbono</option>
-<option>Acero inoxidable</option>
-<option>Aluminio</option>
-<option>Latón</option>
-<option>Cobre</option>
-</select>
+      <section class="panel" id="panel-lab">
+        <h2>5. Laboratorio virtual: simulación y lectura de gráficas</h2>
+        <p>Realiza los ensayos seleccionados. Observa la simulación, lee la gráfica y anota los resultados en la libreta de trabajo antes de continuar.</p>
+        <div class="tabs" id="labTabs"></div>
+        <div id="labContainer"></div>
+        <div class="card" style="margin-top:16px">
+          <label class="checkrow">
+            <input type="checkbox" id="notebookCheck" />
+            <span>Confirmo que he anotado en mi libreta los resultados principales y una interpretación breve de la gráfica.</span>
+          </label>
+        </div>
+        <div class="actions">
+          <button class="secondary" onclick="goStep('ensayos')">Volver</button>
+          <button id="goDecision">Continuar: decisión final</button>
+        </div>
+      </section>
 
-<h3>Conclusión técnica</h3>
-<textarea id="conclusion" placeholder="Explica tu decisión..."></textarea>
+      <section class="panel" id="panel-final">
+        <h2>6. Decisión final, nota y explicación</h2>
+        <p class="no-print">Selecciona el material definitivo y redacta una conclusión técnica. Después obtendrás una nota orientativa y retroalimentación.</p>
+        <div class="grid two">
+          <div class="card">
+            <label for="finalMaterial">Material definitivo</label>
+            <select id="finalMaterial"></select>
+            <label for="finalConclusion" style="margin-top:12px">Conclusión técnica</label>
+            <textarea id="finalConclusion" placeholder="El material elegido es... porque... Los ensayos muestran que... Frente al segundo material..."></textarea>
+            <div class="actions no-print">
+              <button class="good" onclick="gradeWork()">Obtener nota y explicación</button>
+              <button class="secondary" onclick="window.print()">Imprimir informe</button>
+              <button class="ghost" onclick="exportReport()">Descargar informe .txt</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Retroalimentación</h3>
+            <div id="gradeOutput">
+              <p class="small">Cuando completes la conclusión, pulsa “Obtener nota y explicación”.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <h3>Informe técnico generado</h3>
+          <div id="reportOutput" class="formula">Aún no se ha generado el informe.</div>
+        </div>
+        <div class="actions no-print">
+          <button class="secondary" onclick="goStep('lab')">Volver al laboratorio</button>
+          <button class="ghost" onclick="resetAll()">Nuevo reto</button>
+        </div>
+      </section>
 
-<br>
+    </div>
+  </main>
 
-<button onclick="calcularNota()">Obtener nota</button>
+  <script>
+    const challenges = {
+      soporte_sensor: {
+        title: "Soporte metálico para sensor exterior",
+        context: "El prototipo debe sujetar un pequeño sensor en el exterior de un edificio. Estará expuesto a lluvia, viento y cambios de temperatura.",
+        function: "Sujetar sin deformarse y resistir el ambiente exterior.",
+        conditions: ["exterior", "bajo peso deseable", "resistencia mecánica media", "corrosión importante"],
+        recommendedProps: ["resistencia", "rigidez", "corrosion", "baja_densidad", "fabricabilidad"],
+        idealTests: ["traccion"],
+        hint: "No basta con que sea resistente: si se oxida rápido, fallará en servicio."
+      },
+      union_ligera: {
+        title: "Pieza de unión para una estructura ligera",
+        context: "La pieza une dos barras de una estructura de aula. Debe soportar carga sin aumentar demasiado el peso total.",
+        function: "Unir elementos estructurales con seguridad y poca masa.",
+        conditions: ["tracción y flexión", "peso limitado", "fabricación sencilla", "seguridad"],
+        recommendedProps: ["resistencia", "rigidez", "baja_densidad", "fabricabilidad", "coste"],
+        idealTests: ["traccion"],
+        hint: "La relación resistencia/peso es clave."
+      },
+      palanca_golpes: {
+        title: "Palanca manual sometida a golpes",
+        context: "Se quiere construir una pequeña palanca que se usará de forma repetida y puede recibir golpes accidentales.",
+        function: "Transmitir fuerza y soportar impactos sin romper de forma frágil.",
+        conditions: ["impacto", "esfuerzo mecánico", "desgaste superficial", "seguridad"],
+        recommendedProps: ["resistencia", "resiliencia", "dureza", "ductilidad", "fabricabilidad"],
+        idealTests: ["traccion", "dureza", "charpy"],
+        hint: "Un material muy duro puede no ser el más seguro si es frágil."
+      },
+      pasador_eje: {
+        title: "Pasador o eje para mecanismo sencillo",
+        context: "El prototipo necesita un pasador que soporta carga y rozamiento en una articulación.",
+        function: "Soportar carga, rozamiento y mantener dimensiones.",
+        conditions: ["carga", "desgaste", "rigidez", "mecanizado"],
+        recommendedProps: ["resistencia", "dureza", "rigidez", "ductilidad", "fabricabilidad"],
+        idealTests: ["traccion", "dureza"],
+        hint: "Aquí importan la resistencia, la dureza superficial y que no falle de manera brusca."
+      }
+    };
 
-<button onclick="copiarExcel()">Copiar fila Excel</button>
+    const properties = {
+      resistencia: {
+        label: "Resistencia mecánica",
+        short: "Soporta esfuerzos sin romper.",
+        detail: "Importante si la pieza trabaja a tracción, compresión, flexión o cortadura."
+      },
+      rigidez: {
+        label: "Rigidez",
+        short: "Se deforma poco.",
+        detail: "Relacionada con el módulo de Young. No es lo mismo que resistencia."
+      },
+      ductilidad: {
+        label: "Ductilidad",
+        short: "Se deforma antes de romper.",
+        detail: "Permite detectar deformaciones y evita roturas frágiles repentinas."
+      },
+      dureza: {
+        label: "Dureza",
+        short: "Resiste penetración, rayado o desgaste.",
+        detail: "Útil en piezas con rozamiento o contacto superficial."
+      },
+      resiliencia: {
+        label: "Resiliencia / tenacidad al impacto",
+        short: "Absorbe energía en golpes.",
+        detail: "Se trabaja con ensayos tipo Charpy."
+      },
+      baja_densidad: {
+        label: "Baja densidad",
+        short: "Permite reducir masa.",
+        detail: "Clave en estructuras ligeras o piezas móviles."
+      },
+      corrosion: {
+        label: "Resistencia a la corrosión",
+        short: "Aguanta humedad y exterior.",
+        detail: "No se evalúa con tracción: se consulta en ficha técnica o ensayos específicos."
+      },
+      fabricabilidad: {
+        label: "Facilidad de fabricación",
+        short: "Se corta, mecaniza o une con facilidad.",
+        detail: "Depende de medios disponibles en el aula o taller."
+      },
+      coste: {
+        label: "Coste",
+        short: "Adecuación económica.",
+        detail: "Un prototipo escolar debe considerar presupuesto y disponibilidad."
+      },
+      sostenibilidad: {
+        label: "Sostenibilidad",
+        short: "Reciclabilidad e impacto.",
+        detail: "Incluye vida útil, reciclado y consumo de material."
+      }
+    };
 
-<button onclick="descargarCSV()">Descargar registro Excel</button>
+    const materials = {
+      acero_bajo: {
+        name: "Acero al carbono",
+        family: "Metal ferroso",
+        density: 7.85,
+        E: 210,
+        yield: 250,
+        tensile: 420,
+        elongation: 25,
+        HB: 120,
+        charpy: 70,
+        corrosion: 2,
+        cost: 5,
+        fabricability: 4,
+        sustainability: 4,
+        notes: "Resistente, rígido, económico y fácil de conseguir. Se oxida si no se protege.",
+        uses: "estructuras, tornillería, soportes, piezas mecánicas"
+      },
+      acero_inox: {
+        name: "Acero inoxidable",
+        family: "Metal ferroso aleado",
+        density: 7.90,
+        E: 200,
+        yield: 215,
+        tensile: 520,
+        elongation: 40,
+        HB: 160,
+        charpy: 95,
+        corrosion: 5,
+        cost: 2,
+        fabricability: 2,
+        sustainability: 4,
+        notes: "Muy buena resistencia a la corrosión. Más caro y más difícil de mecanizar.",
+        uses: "exterior, alimentación, tornillería inoxidable, piezas expuestas a humedad"
+      },
+      aluminio: {
+        name: "Aluminio 6061",
+        family: "Metal no ferroso",
+        density: 2.70,
+        E: 69,
+        yield: 275,
+        tensile: 310,
+        elongation: 12,
+        HB: 95,
+        charpy: 45,
+        corrosion: 4,
+        cost: 3,
+        fabricability: 5,
+        sustainability: 5,
+        notes: "Muy ligero y resistente a la corrosión. Menos rígido que el acero.",
+        uses: "estructuras ligeras, perfiles, soportes, carcasas, transporte"
+      },
+      laton: {
+        name: "Latón",
+        family: "Aleación de cobre y zinc",
+        density: 8.50,
+        E: 100,
+        yield: 200,
+        tensile: 360,
+        elongation: 30,
+        HB: 100,
+        charpy: 55,
+        corrosion: 4,
+        cost: 2,
+        fabricability: 5,
+        sustainability: 4,
+        notes: "Buena maquinabilidad y resistencia a la corrosión. Denso y más caro.",
+        uses: "casquillos, piezas decorativas, fontanería, contactos"
+      },
+      cobre: {
+        name: "Cobre",
+        family: "Metal no ferroso",
+        density: 8.96,
+        E: 110,
+        yield: 70,
+        tensile: 220,
+        elongation: 45,
+        HB: 50,
+        charpy: 65,
+        corrosion: 4,
+        cost: 1,
+        fabricability: 4,
+        sustainability: 5,
+        notes: "Muy buen conductor eléctrico y térmico. Mecánicamente no suele ser la mejor opción estructural.",
+        uses: "cables, disipadores, tuberías, contactos eléctricos"
+      }
+    };
 
-<button class="good" onclick="sendToForms()">📤 Enviar al formulario</button>
+    const testInfo = {
+      traccion: {
+        label: "Ensayo de tracción",
+        goal: "Mide resistencia, límite elástico, rigidez y deformación.",
+        props: ["resistencia", "rigidez", "ductilidad"]
+      },
+      dureza: {
+        label: "Ensayo de dureza",
+        goal: "Mide resistencia a penetración y ayuda a estimar desgaste superficial.",
+        props: ["dureza"]
+      },
+      charpy: {
+        label: "Ensayo de resiliencia Charpy",
+        goal: "Mide energía absorbida en un impacto.",
+        props: ["resiliencia"]
+      }
+    };
 
-<h2 id="nota"></h2>
+    const steps = [
+      ["reto", "Reto"],
+      ["propiedades", "Propiedades"],
+      ["material", "Material"],
+      ["ensayos", "Ensayos"],
+      ["lab", "Laboratorio"],
+      ["final", "Decisión final"]
+    ];
 
-<h3>Informe generado</h3>
-<textarea id="informe" readonly></textarea>
+    let state = {
+      step: "reto",
+      challenge: null,
+      selectedProps: [],
+      material1: "acero_bajo",
+      material2: "",
+      selectedTests: [],
+      currentLab: "traccion",
+      performed: {},
+      readings: {},
+      notebook: false,
+      graded: false
+    };
 
-</div>
+    const saved = localStorage.getItem("materialLabMetalesState");
+    if(saved){
+      try{ state = {...state, ...JSON.parse(saved)}; }catch(e){}
+    }
 
-<script>
+    function save(){
+      localStorage.setItem("materialLabMetalesState", JSON.stringify(state));
+      updateStepper();
+    }
 
-let state={
- nota:null
-};
+    function resetAll(){
+      if(confirm("¿Quieres borrar el progreso y empezar un nuevo reto?")){
+        localStorage.removeItem("materialLabMetalesState");
+        location.reload();
+      }
+    }
 
-function calcularNota(){
+    function goStep(step){
+      state.step = step;
+      document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+      document.getElementById("panel-" + step).classList.add("active");
+      window.scrollTo({top:0, behavior:"smooth"});
+      save();
+      if(step === "lab") renderLab();
+      if(step === "final") renderFinal();
+    }
 
- let nota=(Math.random()*5+5).toFixed(1);
+    function updateStepper(){
+      const currentIndex = steps.findIndex(s=>s[0]===state.step);
+      document.getElementById("stepper").innerHTML = steps.map((s,i)=>{
+        let cls = "step-pill";
+        if(s[0]===state.step) cls += " active";
+        else if(i < currentIndex) cls += " done";
+        return `<button class="${cls}" onclick="goStep('${s[0]}')">${i+1}. ${s[1]}</button>`;
+      }).join("");
+    }
 
- state.nota=nota;
+    function init(){
+      updateStepper();
+      renderChallenges();
+      renderProperties();
+      renderMaterials();
+      renderTests();
+      bindEvents();
+      goStep(state.step || "reto");
+    }
 
- document.getElementById("nota").innerHTML="Nota: "+nota;
+    function renderChallenges(){
+      const el = document.getElementById("challengeCards");
+      el.innerHTML = Object.entries(challenges).map(([id,c])=>`
+        <article class="card choice ${state.challenge===id?"selected":""}" onclick="selectChallenge('${id}')">
+          <h3>${c.title}</h3>
+          <p>${c.context}</p>
+          <p><strong>Función:</strong> ${c.function}</p>
+          <div>${c.conditions.map(x=>`<span class="badge">${x}</span>`).join("")}</div>
+        </article>
+      `).join("");
+      document.getElementById("goProps").disabled = !state.challenge;
+    }
 
- let informe=
- "Alumno: "+document.getElementById("nombre").value+
- "\nGrupo: "+document.getElementById("grupo").value+
- "\nMaterial: "+document.getElementById("material").value+
- "\nNota: "+nota+
- "\n\nConclusión:\n"+document.getElementById("conclusion").value;
+    function selectChallenge(id){
+      state.challenge = id;
+      state.selectedProps = [];
+      state.selectedTests = [];
+      state.performed = {};
+      renderChallenges();
+      renderProperties();
+      renderTests();
+      save();
+    }
 
- document.getElementById("informe").value=informe;
-}
+    function renderProperties(){
+      const summary = document.getElementById("selectedChallengeSummary");
+      if(state.challenge){
+        const c = challenges[state.challenge];
+        summary.innerHTML = `<strong>Reto elegido:</strong> ${c.title}<br><span>${c.hint}</span>`;
+      } else {
+        summary.innerHTML = "Primero selecciona un reto.";
+      }
 
-function copiarExcel(){
+      const el = document.getElementById("propertyCards");
+      el.innerHTML = Object.entries(properties).map(([id,p])=>`
+        <label class="checkrow">
+          <input type="checkbox" value="${id}" ${state.selectedProps.includes(id)?"checked":""} onchange="toggleProp('${id}', this.checked)" />
+          <span>
+            <strong>${p.label}</strong><br>
+            <span class="small">${p.short}</span><br>
+            <span class="small">${p.detail}</span>
+          </span>
+        </label>
+      `).join("");
+      document.getElementById("goMaterial").disabled = state.selectedProps.length < 3 || state.selectedProps.length > 5 || !state.challenge;
+    }
 
- if(!state.nota){
-  alert("Primero calcula la nota");
-  return;
- }
+    function toggleProp(id, checked){
+      if(checked && !state.selectedProps.includes(id)) state.selectedProps.push(id);
+      if(!checked) state.selectedProps = state.selectedProps.filter(x=>x!==id);
+      renderProperties();
+      renderMaterials();
+      renderTests();
+      save();
+    }
 
- let fila=
- Date.now()+"\t"+
- new Date().toLocaleDateString()+"\t"+
- document.getElementById("nombre").value+"\t"+
- document.getElementById("grupo").value+"\t"+
- document.getElementById("material").value+"\t"+
- state.nota;
+    function propScoreForMaterial(mat, prop){
+      const vals = Object.values(materials);
+      const max = key => Math.max(...vals.map(m=>m[key]));
+      const min = key => Math.min(...vals.map(m=>m[key]));
+      const norm = (value, key) => {
+        const a = min(key), b = max(key);
+        if(b===a) return 3;
+        return 1 + 4 * ((value-a)/(b-a));
+      };
+      const invNorm = (value, key) => {
+        const a = min(key), b = max(key);
+        if(b===a) return 3;
+        return 1 + 4 * ((b-value)/(b-a));
+      };
+      if(prop==="resistencia") return norm(mat.tensile, "tensile");
+      if(prop==="rigidez") return norm(mat.E, "E");
+      if(prop==="ductilidad") return norm(mat.elongation, "elongation");
+      if(prop==="dureza") return norm(mat.HB, "HB");
+      if(prop==="resiliencia") return norm(mat.charpy, "charpy");
+      if(prop==="baja_densidad") return invNorm(mat.density, "density");
+      if(prop==="corrosion") return mat.corrosion;
+      if(prop==="fabricabilidad") return mat.fabricability;
+      if(prop==="coste") return mat.cost;
+      if(prop==="sostenibilidad") return mat.sustainability;
+      return 3;
+    }
 
- navigator.clipboard.writeText(fila);
+    function suitability(id){
+      const mat = materials[id];
+      const props = state.selectedProps.length ? state.selectedProps : (state.challenge ? challenges[state.challenge].recommendedProps : ["resistencia"]);
+      const avg = props.reduce((sum,p)=>sum+propScoreForMaterial(mat,p),0)/props.length;
+      return Math.round(avg*20);
+    }
 
- alert("Fila copiada. Pega en Excel");
-}
+    function bestMaterial(){
+      return Object.keys(materials).sort((a,b)=>suitability(b)-suitability(a))[0];
+    }
 
-function descargarCSV(){
+    function renderMaterials(){
+      const rows = Object.entries(materials).map(([id,m])=>{
+        const score = suitability(id);
+        return `
+          <tr>
+            <td><strong>${m.name}</strong><br><span class="small">${m.family}</span></td>
+            <td>${m.density.toFixed(2)} g/cm³</td>
+            <td>${m.E} GPa</td>
+            <td>${m.tensile} MPa</td>
+            <td>${m.HB} HB</td>
+            <td>${m.charpy} J/cm²</td>
+            <td>
+              <div class="meter" title="${score}/100"><span style="width:${score}%"></span></div>
+              <span class="small">${score}/100 según tus propiedades</span>
+            </td>
+            <td>${m.notes}</td>
+          </tr>
+        `;
+      }).join("");
+      document.getElementById("materialsTable").innerHTML = `
+        <thead>
+          <tr>
+            <th>Metal</th>
+            <th>Densidad</th>
+            <th>Rigidez E</th>
+            <th>Resistencia tracción</th>
+            <th>Dureza</th>
+            <th>Resiliencia</th>
+            <th>Ajuste</th>
+            <th>Comentario</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      `;
 
- if(!state.nota){
-  alert("Primero calcula la nota");
-  return;
- }
+      const options = Object.entries(materials).map(([id,m])=>`<option value="${id}">${m.name}</option>`).join("");
+      document.getElementById("material1").innerHTML = options;
+      document.getElementById("material1").value = state.material1;
+      document.getElementById("material2").innerHTML = `<option value="">No comparar todavía</option>${options}`;
+      document.getElementById("material2").value = state.material2;
 
- let contenido=
- "Nombre;Grupo;Material;Nota\n"+
- document.getElementById("nombre").value+";"+
- document.getElementById("grupo").value+";"+
- document.getElementById("material").value+";"+
- state.nota;
+      updateMaterialFeedback();
+    }
 
- let blob=new Blob([contenido],{type:"text/csv"});
- let a=document.createElement("a");
- a.href=URL.createObjectURL(blob);
- a.download="registro.csv";
- a.click();
-}
+    function updateMaterialFeedback(){
+      const m = materials[state.material1];
+      if(!m) return;
+      const best = bestMaterial();
+      const msg = state.material1===best
+        ? `<div class="note success"><strong>Buena elección inicial:</strong> según las propiedades que has marcado, ${m.name} aparece como una opción muy adecuada. Ahora tendrás que comprobarlo con ensayos.</div>`
+        : `<div class="note warning"><strong>Elección discutible:</strong> ${m.name} puede servir, pero según tus propiedades la app considera más fuerte la candidatura de ${materials[best].name}. Puedes mantener tu elección si la justificas bien con ensayos.</div>`;
+      document.getElementById("materialFeedback").innerHTML = msg + `
+        <p><strong>Usos frecuentes:</strong> ${m.uses}.</p>
+        <p><strong>Ajuste calculado:</strong> ${suitability(state.material1)}/100.</p>
+      `;
+    }
 
-function sendToForms(){
+    function recommendedTests(){
+      const set = new Set();
+      state.selectedProps.forEach(p=>{
+        Object.entries(testInfo).forEach(([tid,t])=>{
+          if(t.props.includes(p)) set.add(tid);
+        });
+      });
+      if(state.challenge){
+        challenges[state.challenge].idealTests.forEach(t=>set.add(t));
+      }
+      return [...set];
+    }
 
- if(!state.nota){
-  alert("Primero calcula la nota");
-  return;
- }
+    function renderTests(){
+      const rec = recommendedTests();
+      document.getElementById("testRecommendation").innerHTML = rec.length
+        ? `<strong>Ensayos recomendados para tu caso:</strong> ${rec.map(t=>testInfo[t].label).join(", ")}.<br><span class="small">Recuerda: corrosión, coste o fabricación también son importantes, pero no se comprueban con estos tres ensayos mecánicos.</span>`
+        : "Selecciona propiedades para recibir una recomendación.";
+      document.getElementById("testCards").innerHTML = Object.entries(testInfo).map(([id,t])=>`
+        <label class="checkrow">
+          <input type="checkbox" value="${id}" ${state.selectedTests.includes(id)?"checked":""} onchange="toggleTest('${id}', this.checked)" />
+          <span>
+            <strong>${t.label}</strong><br>
+            <span class="small">${t.goal}</span><br>
+            ${rec.includes(id)?'<span class="badge green">recomendado</span>':'<span class="badge orange">solo si lo justificas</span>'}
+          </span>
+        </label>
+      `).join("");
+    }
 
- const nombre=document.getElementById("nombre").value;
- const grupo=document.getElementById("grupo").value;
- const nota=state.nota;
- const informe=document.getElementById("informe").value;
+    function toggleTest(id, checked){
+      if(checked && !state.selectedTests.includes(id)) state.selectedTests.push(id);
+      if(!checked) state.selectedTests = state.selectedTests.filter(x=>x!==id);
+      state.currentLab = state.selectedTests[0] || "traccion";
+      renderTests();
+      save();
+    }
 
- const url="https://forms.cloud.microsoft/e/uUkAFjUNtu?origin=lprLink";
+    function bindEvents(){
+      document.getElementById("goProps").addEventListener("click",()=>goStep("propiedades"));
+      document.getElementById("goMaterial").addEventListener("click",()=>goStep("material"));
+      document.getElementById("goTests").addEventListener("click",()=>goStep("ensayos"));
+      document.getElementById("goLab").addEventListener("click",()=>{
+        if(state.selectedTests.length===0){
+          alert("Selecciona al menos un ensayo.");
+          return;
+        }
+        state.currentLab = state.selectedTests[0];
+        goStep("lab");
+      });
+      document.getElementById("goDecision").addEventListener("click",()=>goStep("final"));
+      document.getElementById("material1").addEventListener("change",e=>{
+        state.material1 = e.target.value;
+        if(state.material2===state.material1) state.material2 = "";
+        renderMaterials();
+        renderTests();
+        save();
+      });
+      document.getElementById("material2").addEventListener("change",e=>{
+        state.material2 = e.target.value;
+        if(state.material2===state.material1){
+          alert("El segundo material debe ser distinto del principal.");
+          state.material2 = "";
+        }
+        renderMaterials();
+        save();
+      });
+      document.getElementById("notebookCheck").addEventListener("change",e=>{
+        state.notebook = e.target.checked;
+        save();
+      });
+      document.getElementById("studentReq").addEventListener("input",save);
+      document.getElementById("studentMatReason").addEventListener("input",save);
+      document.getElementById("studentTestReason").addEventListener("input",save);
+    }
 
- window.open(url,"_blank");
+    function testedMaterials(){
+      const ids = [state.material1];
+      if(state.material2 && state.material2 !== state.material1) ids.push(state.material2);
+      return ids;
+    }
 
- const texto=
- "Nombre: "+nombre+
- "\nGrupo: "+grupo+
- "\nNota: "+nota+
- "\n\nINFORME:\n"+informe;
+    function renderLab(){
+      const tests = state.selectedTests.length ? state.selectedTests : ["traccion"];
+      if(!tests.includes(state.currentLab)) state.currentLab = tests[0];
+      document.getElementById("notebookCheck").checked = !!state.notebook;
+      document.getElementById("labTabs").innerHTML = tests.map(t=>`
+        <button class="tab ${state.currentLab===t?"active":""}" onclick="state.currentLab='${t}';save();renderLab();">${testInfo[t].label}</button>
+      `).join("");
+      if(state.currentLab==="traccion") renderTensionLab();
+      if(state.currentLab==="dureza") renderHardnessLab();
+      if(state.currentLab==="charpy") renderCharpyLab();
+    }
 
- try{
-  navigator.clipboard.writeText(texto);
-  alert("Formulario abierto ✅\nDatos copiados.\nPega con Ctrl+V");
- }catch(e){
-  alert("Formulario abierto.\nCopia manualmente el informe.");
- }
-}
+    function materialTableForTest(test){
+      const ids = testedMaterials();
+      if(test==="traccion"){
+        return `<div class="table-wrap"><table><thead><tr><th>Material</th><th>E</th><th>Límite elástico</th><th>Resistencia máxima</th><th>Alargamiento</th></tr></thead><tbody>
+          ${ids.map(id=>{const m=materials[id];return `<tr><td>${m.name}</td><td>${m.E} GPa</td><td>${m.yield} MPa</td><td>${m.tensile} MPa</td><td>${m.elongation}%</td></tr>`}).join("")}
+        </tbody></table></div>`;
+      }
+      if(test==="dureza"){
+        return `<div class="table-wrap"><table><thead><tr><th>Material</th><th>Dureza aproximada</th><th>Lectura</th></tr></thead><tbody>
+          ${ids.map(id=>{const m=materials[id];return `<tr><td>${m.name}</td><td>${m.HB} HB</td><td>${m.HB>140?"Alta":m.HB>90?"Media":"Baja"}</td></tr>`}).join("")}
+        </tbody></table></div>`;
+      }
+      return `<div class="table-wrap"><table><thead><tr><th>Material</th><th>Energía absorbida específica</th><th>Lectura</th></tr></thead><tbody>
+        ${ids.map(id=>{const m=materials[id];return `<tr><td>${m.name}</td><td>${m.charpy} J/cm²</td><td>${m.charpy>80?"Muy buena":m.charpy>55?"Media":"Limitada"}</td></tr>`}).join("")}
+      </tbody></table></div>`;
+    }
 
-</script>
+    function renderTensionLab(){
+      document.getElementById("labContainer").innerHTML = `
+        <div class="lab-layout">
+          <div class="card">
+            <h3>Simulación: probeta sometida a tracción</h3>
+            <div class="svgbox">
+              <svg viewBox="0 0 600 260" width="100%" height="250" role="img" aria-label="Simulación de ensayo de tracción">
+                <defs>
+                  <linearGradient id="metalGrad" x1="0" x2="1">
+                    <stop offset="0" stop-color="#d7dde8"/>
+                    <stop offset=".5" stop-color="#f6f8fb"/>
+                    <stop offset="1" stop-color="#b9c3d1"/>
+                  </linearGradient>
+                </defs>
+                <rect x="40" y="95" width="135" height="70" rx="12" fill="#c8d2df"/>
+                <rect x="425" y="95" width="135" height="70" rx="12" fill="#c8d2df"/>
+                <path id="probeShape" d="M175 115 C225 115 225 85 300 85 C375 85 375 115 425 115 L425 145 C375 145 375 175 300 175 C225 175 225 145 175 145 Z" fill="url(#metalGrad)" stroke="#7a8799" stroke-width="3"/>
+                <text x="65" y="87" font-size="18" fill="#2457c5" font-weight="700">F ←</text>
+                <text x="493" y="87" font-size="18" fill="#2457c5" font-weight="700">→ F</text>
+                <line x1="180" y1="205" x2="420" y2="205" stroke="#2457c5" stroke-width="3"/>
+                <text x="245" y="230" font-size="16" fill="#34415a">La probeta se alarga hasta romper</text>
+              </svg>
+            </div>
+            <div class="actions">
+              <button onclick="runTension()">Realizar ensayo de tracción</button>
+            </div>
+            <div class="note">
+              <strong>Lectura de gráfica:</strong> observa la pendiente inicial, el límite elástico, la zona plástica y la tensión máxima.
+            </div>
+          </div>
+          <div class="card">
+            <h3>Gráfica tensión-deformación</h3>
+            <canvas id="tensionCanvas" width="760" height="460"></canvas>
+          </div>
+        </div>
+        <div id="tensionResults" class="card" style="margin-top:16px">
+          <p class="small">Pulsa “Realizar ensayo de tracción” para generar la gráfica y los resultados.</p>
+        </div>
+      `;
+      drawTension(false);
+      if(state.performed.traccion) showTensionResults();
+    }
 
+    function stressAt(m, eps){
+      const ey = m.yield / (m.E * 1000);
+      const emax = m.elongation / 100;
+      if(eps <= ey) return m.E * 1000 * eps;
+      if(eps <= emax){
+        const t = (eps - ey) / Math.max(0.001, emax - ey);
+        return m.yield + (m.tensile - m.yield) * Math.sin(t * Math.PI / 2);
+      }
+      return null;
+    }
+
+    function drawAxes(ctx, w, h, xLabel, yLabel){
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0,0,w,h);
+      ctx.strokeStyle = "#ccd6e5";
+      ctx.lineWidth = 1;
+      for(let i=0;i<=5;i++){
+        let x = 70 + i*(w-110)/5;
+        ctx.beginPath();ctx.moveTo(x,30);ctx.lineTo(x,h-70);ctx.stroke();
+        let y = 30 + i*(h-100)/5;
+        ctx.beginPath();ctx.moveTo(70,y);ctx.lineTo(w-40,y);ctx.stroke();
+      }
+      ctx.strokeStyle = "#26364d";
+      ctx.lineWidth = 2;
+      ctx.beginPath();ctx.moveTo(70,30);ctx.lineTo(70,h-70);ctx.lineTo(w-40,h-70);ctx.stroke();
+      ctx.fillStyle = "#26364d";
+      ctx.font = "15px system-ui";
+      ctx.fillText(xLabel, w/2-70, h-25);
+      ctx.save();
+      ctx.translate(22,h/2+70);
+      ctx.rotate(-Math.PI/2);
+      ctx.fillText(yLabel, 0, 0);
+      ctx.restore();
+    }
+
+    function colorForIndex(i){
+      return ["#2457c5","#0e8f7e","#b66a00"][i%3];
+    }
+
+    function drawTension(full){
+      const canvas = document.getElementById("tensionCanvas");
+      if(!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width, h = canvas.height;
+      drawAxes(ctx,w,h,"Deformación ε (%)","Tensión σ (MPa)");
+      const ids = testedMaterials();
+      const maxEps = Math.max(...ids.map(id=>materials[id].elongation))/100;
+      const maxStress = Math.max(...ids.map(id=>materials[id].tensile))*1.15;
+      ids.forEach((id,idx)=>{
+        const m = materials[id];
+        const emax = m.elongation/100;
+        const points = [];
+        const stepsN = full ? 80 : 20;
+        for(let i=0;i<=stepsN;i++){
+          const eps = emax*i/stepsN;
+          const st = stressAt(m, eps);
+          const x = 70 + (eps/maxEps)*(w-110);
+          const y = h-70 - (st/maxStress)*(h-100);
+          points.push([x,y,eps,st]);
+        }
+        ctx.strokeStyle = colorForIndex(idx);
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        points.forEach((p,i)=> i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+        ctx.stroke();
+        if(full){
+          const ey = m.yield/(m.E*1000);
+          const xy = [70 + (ey/maxEps)*(w-110), h-70 - (m.yield/maxStress)*(h-100)];
+          const xr = [70 + (emax/maxEps)*(w-110), h-70 - (m.tensile/maxStress)*(h-100)];
+          ctx.fillStyle = colorForIndex(idx);
+          ctx.beginPath();ctx.arc(xy[0],xy[1],6,0,Math.PI*2);ctx.fill();
+          ctx.beginPath();ctx.arc(xr[0],xr[1],6,0,Math.PI*2);ctx.fill();
+          ctx.font = "14px system-ui";
+          ctx.fillText(`${m.name}`, 88, 45+idx*22);
+          ctx.fillRect(72,35+idx*22,10,10);
+        }
+      });
+      ctx.fillStyle = "#5e6b7e";
+      ctx.font = "13px system-ui";
+      ctx.fillText("Cada curva permite comparar rigidez, resistencia máxima y deformación antes de romper.", 88, h-45);
+    }
+
+    function runTension(){
+      state.performed.traccion = true;
+      save();
+      animateCanvas("tensionCanvas", drawTension);
+      setTimeout(showTensionResults, 650);
+    }
+
+    function animateCanvas(canvasId, drawFn){
+      let n = 0;
+      const interval = setInterval(()=>{
+        n++;
+        drawFn(n>8);
+        if(n>8) clearInterval(interval);
+      },70);
+    }
+
+    function showTensionResults(){
+      const ids = testedMaterials();
+      document.getElementById("tensionResults").innerHTML = `
+        <h3>Resultados del ensayo de tracción</h3>
+        ${materialTableForTest("traccion")}
+        <div class="result-kpi">
+          ${ids.map(id=>{const m=materials[id];return `
+            <div class="kpi">
+              <span class="small">${m.name}</span>
+              <strong>${m.tensile} MPa</strong>
+              <span>resistencia máxima</span>
+            </div>
+          `}).join("")}
+        </div>
+        <div class="note success">
+          <strong>Interpretación guiada:</strong> mayor pendiente inicial significa mayor rigidez. Mayor tensión máxima significa mayor resistencia. Mayor deformación final indica más ductilidad.
+        </div>
+        <label for="readTension">Pregunta de lectura: ¿qué material de los ensayados presenta mayor resistencia máxima y qué dato lo indica?</label>
+        <textarea id="readTension" oninput="state.readings.traccion=this.value;save()" placeholder="Respuesta...">${state.readings.traccion||""}</textarea>
+      `;
+    }
+
+    function renderHardnessLab(){
+      document.getElementById("labContainer").innerHTML = `
+        <div class="lab-layout">
+          <div class="card">
+            <h3>Simulación: penetrador sobre la superficie</h3>
+            <div class="svgbox">
+              <svg viewBox="0 0 600 260" width="100%" height="250">
+                <rect x="90" y="170" width="420" height="46" rx="8" fill="#cbd4df" stroke="#7a8799"/>
+                <path id="indenter" d="M285 45 L315 45 L300 150 Z" fill="#6d7888"/>
+                <ellipse id="mark" cx="300" cy="170" rx="38" ry="8" fill="#8f9aac" opacity=".5"/>
+                <line x1="300" y1="20" x2="300" y2="45" stroke="#2457c5" stroke-width="5"/>
+                <text x="318" y="35" font-size="16" fill="#2457c5" font-weight="700">Carga F</text>
+                <text x="206" y="238" font-size="15" fill="#34415a">A mayor huella, menor dureza</text>
+              </svg>
+            </div>
+            <div class="formula">Brinell: HB = 2F / [πD · (D − √(D² − d²))]</div>
+            <div class="actions">
+              <button onclick="runHardness()">Realizar ensayo de dureza</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Gráfica comparativa de dureza</h3>
+            <canvas id="hardnessCanvas" width="760" height="460"></canvas>
+          </div>
+        </div>
+        <div id="hardnessResults" class="card" style="margin-top:16px">
+          <p class="small">Pulsa “Realizar ensayo de dureza” para generar la gráfica y los resultados.</p>
+        </div>
+      `;
+      drawHardness(false);
+      if(state.performed.dureza) showHardnessResults();
+    }
+
+    function drawBarChart(canvasId, labels, values, yLabel, title, full){
+      const canvas = document.getElementById(canvasId);
+      if(!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const w=canvas.width,h=canvas.height;
+      drawAxes(ctx,w,h,"Material",yLabel);
+      const maxVal = Math.max(...values)*1.2 || 1;
+      const plotW = w-130;
+      const barW = Math.min(90, plotW/(values.length*2));
+      labels.forEach((lab,i)=>{
+        const x = 105 + i*(plotW/values.length) + barW/2;
+        const val = full ? values[i] : values[i]*0.45;
+        const bh = (val/maxVal)*(h-115);
+        ctx.fillStyle = colorForIndex(i);
+        ctx.fillRect(x,h-70-bh,barW,bh);
+        ctx.fillStyle = "#26364d";
+        ctx.font = "13px system-ui";
+        ctx.fillText(lab, x-18, h-45);
+        if(full) ctx.fillText(values[i], x+8, h-78-bh);
+      });
+      ctx.fillStyle = "#5e6b7e";
+      ctx.font = "14px system-ui";
+      ctx.fillText(title, 88, 46);
+    }
+
+    function drawHardness(full){
+      const ids = testedMaterials();
+      drawBarChart("hardnessCanvas", ids.map(id=>materials[id].name.split(" ")[0]), ids.map(id=>materials[id].HB), "Dureza HB", "Más alto = más resistencia superficial a penetración", full);
+    }
+
+    function runHardness(){
+      state.performed.dureza = true;
+      save();
+      let n=0;
+      const interval=setInterval(()=>{
+        n++;
+        drawHardness(n>7);
+        if(n>7) clearInterval(interval);
+      },80);
+      setTimeout(showHardnessResults, 700);
+    }
+
+    function showHardnessResults(){
+      const ids = testedMaterials();
+      const rows = ids.map(id=>{
+        const m=materials[id];
+        const F=3000, D=10;
+        const HB=m.HB;
+        const d = Math.sqrt(Math.max(0.1, D*D - Math.pow(D - (2*F)/(Math.PI*D*HB),2)));
+        return `<tr><td>${m.name}</td><td>${HB} HB</td><td>F = ${F} kgf; D = ${D} mm</td><td>d ≈ ${d.toFixed(2)} mm</td></tr>`;
+      }).join("");
+      document.getElementById("hardnessResults").innerHTML = `
+        <h3>Resultados del ensayo de dureza</h3>
+        <div class="table-wrap"><table><thead><tr><th>Material</th><th>Dureza</th><th>Datos de ensayo</th><th>Huella estimada</th></tr></thead><tbody>${rows}</tbody></table></div>
+        <div class="note success">
+          <strong>Interpretación guiada:</strong> si con la misma carga aparece una huella menor, el material es más duro. La dureza puede ayudar frente al desgaste, pero no garantiza buena resistencia al impacto.
+        </div>
+        <label for="readHardness">Pregunta de lectura: ¿qué material presenta mayor dureza y qué consecuencia tendría en una pieza sometida a rozamiento?</label>
+        <textarea id="readHardness" oninput="state.readings.dureza=this.value;save()" placeholder="Respuesta...">${state.readings.dureza||""}</textarea>
+      `;
+    }
+
+    function renderCharpyLab(){
+      document.getElementById("labContainer").innerHTML = `
+        <div class="lab-layout">
+          <div class="card">
+            <h3>Simulación: péndulo Charpy</h3>
+            <div class="svgbox">
+              <svg viewBox="0 0 600 270" width="100%" height="255">
+                <line x1="300" y1="30" x2="210" y2="150" stroke="#7a8799" stroke-width="5"/>
+                <circle cx="210" cy="150" r="30" fill="#2457c5" opacity=".85"/>
+                <line x1="300" y1="30" x2="390" y2="180" stroke="#c0c9d7" stroke-width="4" stroke-dasharray="7 7"/>
+                <circle cx="390" cy="180" r="24" fill="#9aa6b7" opacity=".5"/>
+                <rect x="280" y="190" width="40" height="45" fill="#cbd4df" stroke="#7a8799"/>
+                <path d="M300 190 L310 212 L300 235 L290 212 Z" fill="#fff" stroke="#7a8799"/>
+                <text x="112" y="92" font-size="15" fill="#2457c5" font-weight="700">Altura inicial</text>
+                <text x="410" y="166" font-size="15" fill="#5e6b7e">Altura final</text>
+                <text x="198" y="255" font-size="15" fill="#34415a">La diferencia de alturas indica energía absorbida</text>
+              </svg>
+            </div>
+            <div class="formula">E absorbida = m · g · (h₀ − h₁)</div>
+            <div class="actions">
+              <button onclick="runCharpy()">Realizar ensayo Charpy</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Gráfica de energía absorbida</h3>
+            <canvas id="charpyCanvas" width="760" height="460"></canvas>
+          </div>
+        </div>
+        <div id="charpyResults" class="card" style="margin-top:16px">
+          <p class="small">Pulsa “Realizar ensayo Charpy” para generar la gráfica y los resultados.</p>
+        </div>
+      `;
+      drawCharpy(false);
+      if(state.performed.charpy) showCharpyResults();
+    }
+
+    function drawCharpy(full){
+      const ids = testedMaterials();
+      drawBarChart("charpyCanvas", ids.map(id=>materials[id].name.split(" ")[0]), ids.map(id=>materials[id].charpy), "J/cm²", "Más alto = mejor comportamiento frente a impactos", full);
+    }
+
+    function runCharpy(){
+      state.performed.charpy = true;
+      save();
+      let n=0;
+      const interval=setInterval(()=>{
+        n++;
+        drawCharpy(n>7);
+        if(n>7) clearInterval(interval);
+      },80);
+      setTimeout(showCharpyResults, 700);
+    }
+
+    function showCharpyResults(){
+      const ids = testedMaterials();
+      const rows = ids.map(id=>{
+        const m=materials[id];
+        const area=0.8;
+        const energy=m.charpy*area;
+        return `<tr><td>${m.name}</td><td>${m.charpy} J/cm²</td><td>${area.toFixed(2)} cm²</td><td>${energy.toFixed(1)} J</td></tr>`;
+      }).join("");
+      document.getElementById("charpyResults").innerHTML = `
+        <h3>Resultados del ensayo Charpy</h3>
+        <div class="table-wrap"><table><thead><tr><th>Material</th><th>Resiliencia</th><th>Sección de probeta</th><th>Energía absorbida estimada</th></tr></thead><tbody>${rows}</tbody></table></div>
+        <div class="note success">
+          <strong>Interpretación guiada:</strong> mayor energía absorbida indica mejor comportamiento ante golpes. Si una pieza puede recibir impactos, este dato puede ser más importante que la dureza.
+        </div>
+        <label for="readCharpy">Pregunta de lectura: ¿qué material absorbería más energía antes de romper y por qué es importante para el reto?</label>
+        <textarea id="readCharpy" oninput="state.readings.charpy=this.value;save()" placeholder="Respuesta...">${state.readings.charpy||""}</textarea>
+      `;
+    }
+
+    function renderFinal(){
+      const options = testedMaterials().map(id=>`<option value="${id}">${materials[id].name}</option>`).join("");
+      document.getElementById("finalMaterial").innerHTML = options || Object.entries(materials).map(([id,m])=>`<option value="${id}">${m.name}</option>`).join("");
+      if(!document.getElementById("finalConclusion").dataset.bound){
+        document.getElementById("finalConclusion").addEventListener("input",save);
+        document.getElementById("finalMaterial").addEventListener("change",save);
+        document.getElementById("finalConclusion").dataset.bound = "1";
+      }
+      buildReport(false);
+    }
+
+    function scorePropSelection(){
+      if(!state.challenge) return {score:0,msg:"No se ha seleccionado reto."};
+      const rec = challenges[state.challenge].recommendedProps;
+      const selected = state.selectedProps;
+      const hits = selected.filter(p=>rec.includes(p)).length;
+      const missing = rec.filter(p=>!selected.includes(p));
+      let score = Math.min(2, hits/rec.length*2);
+      if(selected.length<3 || selected.length>5) score -= .4;
+      score = Math.max(0, score);
+      return {score,msg:`Has seleccionado ${hits} propiedades clave de ${rec.length}. ${missing.length? "Faltan por considerar: " + missing.map(p=>properties[p].label).join(", ") + ".":"La selección de propiedades está bien alineada con el reto."}`};
+    }
+
+    function scoreMaterial(finalId){
+      const best = bestMaterial();
+      const finalScore = suitability(finalId);
+      const bestScore = suitability(best);
+      let score = 0;
+      if(finalId===best) score = 2;
+      else if(finalScore >= bestScore-10) score = 1.5;
+      else if(finalScore >= bestScore-20) score = 1;
+      else score = .5;
+      return {score,msg:`Tu material final obtiene ${finalScore}/100 en la matriz calculada. La opción mejor valorada por la app es ${materials[best].name} con ${bestScore}/100.`};
+    }
+
+    function scoreTests(){
+      const rec = recommendedTests();
+      const selectedHits = rec.filter(t=>state.selectedTests.includes(t)).length;
+      const performedHits = rec.filter(t=>state.performed[t]).length;
+      let score = 0;
+      if(rec.length) score = (selectedHits/rec.length)*1 + (performedHits/rec.length)*1;
+      return {score:Math.min(2,score),msg:`Ensayos recomendados: ${rec.map(t=>testInfo[t].label).join(", ")}. Has realizado ${performedHits} de ${rec.length}.`};
+    }
+
+    function scoreReadings(){
+      const done = state.selectedTests.filter(t=>state.performed[t]);
+      const answered = done.filter(t=>(state.readings[t]||"").trim().length>30).length;
+      let score = done.length ? (answered/done.length)*1.5 : 0;
+      if(state.notebook) score += .5;
+      return {score:Math.min(2,score),msg:`Has respondido ${answered} preguntas de lectura de gráfica de ${done.length} ensayos realizados. ${state.notebook?"También has confirmado anotación en libreta.":"Falta confirmar la anotación en libreta."}`};
+    }
+
+    function scoreConclusion(){
+      const text = (document.getElementById("finalConclusion")?.value || "").trim();
+      let score = 0;
+      if(text.length>80) score += .8;
+      if(/ensayo|tracci[oó]n|dureza|charpy|resiliencia|gr[aá]fica|resultado/i.test(text)) score += .5;
+      if(/porque|debido|ya que|por tanto|frente|compar/i.test(text)) score += .4;
+      if(/MPa|GPa|HB|J\/cm|densidad|m[oó]dulo|l[ií]mite/i.test(text)) score += .3;
+      return {score:Math.min(2,score),msg:score>=1.6?"La conclusión usa argumentos técnicos y resultados.":"La conclusión necesita más datos, comparación o referencias a los ensayos."};
+    }
+
+    function gradeWork(){
+      const finalId = document.getElementById("finalMaterial").value;
+      const parts = [
+        ["Propiedades", scorePropSelection()],
+        ["Material", scoreMaterial(finalId)],
+        ["Ensayos", scoreTests()],
+        ["Lectura de gráficas", scoreReadings()],
+        ["Conclusión", scoreConclusion()]
+      ];
+      const total = parts.reduce((s,p)=>s+p[1].score,0);
+      const grade = Math.round(total*10)/10;
+      const level = grade>=8 ? "Excelente trabajo técnico." : grade>=6 ? "Trabajo correcto, con aspectos mejorables." : grade>=4 ? "Trabajo iniciado, pero falta justificar mejor." : "Necesitas revisar la relación entre reto, propiedades, ensayos y decisión.";
+      document.getElementById("gradeOutput").innerHTML = `
+        <div class="score">${grade.toFixed(1)}/10</div>
+        <p><strong>${level}</strong></p>
+        <div class="table-wrap"><table><thead><tr><th>Bloque</th><th>Puntuación</th><th>Explicación</th></tr></thead><tbody>
+          ${parts.map(p=>`<tr><td>${p[0]}</td><td>${p[1].score.toFixed(1)}/2</td><td>${p[1].msg}</td></tr>`).join("")}
+        </tbody></table></div>
+      `;
+      buildReport(true, grade, parts);
+      state.graded = true;
+      save();
+    }
+
+    function buildReport(force, grade, parts){
+      const out = document.getElementById("reportOutput");
+      if(!out) return;
+      const c = state.challenge ? challenges[state.challenge] : null;
+      const finalSel = document.getElementById("finalMaterial");
+      const finalId = finalSel ? finalSel.value : state.material1;
+      const mat = materials[finalId] || materials[state.material1];
+      const conclusion = document.getElementById("finalConclusion")?.value || "";
+      const report = [
+        "INFORME TÉCNICO · MATERIALLAB METALES",
+        "",
+        "Reto: " + (c ? c.title : "No seleccionado"),
+        "Función del prototipo: " + (c ? c.function : ""),
+        "Propiedades seleccionadas: " + state.selectedProps.map(p=>properties[p].label).join(", "),
+        "Material principal analizado: " + (materials[state.material1]?.name || ""),
+        "Segundo material analizado: " + (state.material2 ? materials[state.material2].name : "No utilizado"),
+        "Material definitivo: " + (mat?.name || ""),
+        "Ensayos seleccionados: " + state.selectedTests.map(t=>testInfo[t].label).join(", "),
+        "Ensayos realizados: " + Object.keys(state.performed).filter(t=>state.performed[t]).map(t=>testInfo[t].label).join(", "),
+        "",
+        "Resultados principales:",
+        ...testedMaterials().map(id=>{
+          const m=materials[id];
+          return `- ${m.name}: E=${m.E} GPa; σR=${m.tensile} MPa; dureza=${m.HB} HB; resiliencia=${m.charpy} J/cm²; densidad=${m.density} g/cm³.`;
+        }),
+        "",
+        "Conclusión del alumno/a:",
+        conclusion || "Pendiente de redactar.",
+        "",
+        force ? ("Nota orientativa: " + grade.toFixed(1) + "/10") : "Nota orientativa: pendiente de generar."
+      ].join("\n");
+      out.textContent = report;
+    }
+
+    function exportReport(){
+      buildReport(true, 0, []);
+      const text = document.getElementById("reportOutput").textContent;
+      const blob = new Blob([text], {type:"text/plain;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "informe_materiallab_metales.txt";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    init();
+  </script>
 </body>
 </html>
